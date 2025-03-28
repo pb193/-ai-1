@@ -1,0 +1,96 @@
+-- 用户表：存储系统中的用户信息
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,                  -- 用户ID，自增主键，唯一标识每个用户
+    full_name VARCHAR(255) NOT NULL,                    -- 用户全名，不能为空，用于显示用户真实姓名
+    email VARCHAR(255) UNIQUE NOT NULL,                 -- 用户邮箱，唯一且不为空，用于登录或联系
+    username VARCHAR(50) UNIQUE NOT NULL,               -- 用户名，唯一且不为空，用于登录和标识
+    password VARCHAR(255) NOT NULL,                     -- 密码，存储 bcrypt 加密后的值，不能为空
+    role ENUM('student', 'teacher', 'admin') DEFAULT 'student' NOT NULL, -- 用户角色，枚举类型（学生、教师、管理员），默认值为 'student'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP      -- 创建时间，记录用户注册的时间，默认为当前时间戳
+);
+
+-- 课程表：存储课程的基本信息
+CREATE TABLE courses (
+    course_id VARCHAR(50) PRIMARY KEY,                  -- 课程ID，主键，唯一标识课程（如 NEWxxxxxx 格式的助课号）
+    name VARCHAR(255) NOT NULL,                         -- 课程名称，不能为空，用于显示课程标题
+    details TEXT,                                       -- 课程详情，可为空，描述课程的具体内容或说明
+    deadline DATETIME,                                  -- 课程截止日期，可为空，表示课程结束时间
+    enrollment INT DEFAULT 0,                           -- 报名人数，默认值为 0，记录已加入课程的学生数量
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,     -- 创建时间，记录课程创建的时间，默认为当前时间戳
+    created_by INT,                                     -- 创建者ID，外键关联 users(id)，标识创建课程的用户
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL -- 外键约束，当用户删除时，created_by 置为 NULL
+);
+
+-- 课程内容表：存储课程的各种内容（如概述、资源、讨论、任务）
+CREATE TABLE content (
+    id INT AUTO_INCREMENT PRIMARY KEY,                  -- 内容ID，自增主键，唯一标识每条内容
+    course_id VARCHAR(50) NOT NULL,                     -- 课程ID，外键关联 courses(course_id)，标识内容所属课程
+    tab ENUM('overview', 'resources', 'discussion', 'tasks') NOT NULL, -- 内容类型，枚举类型，表示属于课程的哪个标签（概述、资源、讨论、任务）
+    text TEXT,                                          -- 文本内容，可为空，用于存储描述、讨论或任务详情
+    file_path VARCHAR(255),                             -- 文件路径，可为空，存储上传文件的路径（如 DOCX、PPT、PDF）
+    uploaded_by INT,                                    -- 上传者ID，外键关联 users(id)，标识上传内容的用户
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,     -- 创建时间，记录内容创建的时间，默认为当前时间戳
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE, -- 外键约束，当课程删除时，相关内容级联删除
+    FOREIGN KEY (uploaded_by) REFERENCES users(id) ON DELETE SET NULL -- 外键约束，当用户删除时，uploaded_by 置为 NULL
+);
+
+-- 聊天消息表：存储学生提问和 AI 回复的记录
+CREATE TABLE chat_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,                  -- 消息ID，自增主键，唯一标识每条消息
+    course_id VARCHAR(50) NOT NULL,                     -- 课程ID，外键关联 courses(course_id)，标识消息所属课程
+    message TEXT NOT NULL,                              -- 消息内容，不能为空，存储学生问题或 AI 回复
+    is_ai_response BOOLEAN DEFAULT FALSE,               -- 是否为 AI 回复，默认 FALSE，表示消息来源（FALSE 为学生，TRUE 为 AI）
+    user_id INT,                                        -- 用户ID，外键关联 users(id)，标识发送消息的用户，可为空（AI 回复时为空）
+    session_id INT DEFAULT NULL,                        -- 分节ID，外键关联 course_sessions(id)，标识消息关联的课程分节，可为空
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,     -- 创建时间，记录消息发送的时间，默认为当前时间戳
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE, -- 外键约束，当课程删除时，相关消息级联删除
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL, -- 外键约束，当用户删除时，user_id 置为 NULL
+    FOREIGN KEY (session_id) REFERENCES course_sessions(id) ON DELETE SET NULL -- 外键约束，当分节删除时，session_id 置为 NULL
+);
+
+-- 课程报名表：记录学生对课程的报名情况
+CREATE TABLE IF NOT EXISTS enrollments (
+    id INT AUTO_INCREMENT PRIMARY KEY,                  -- 报名ID，自增主键，唯一标识每条报名记录
+    course_id VARCHAR(50) NOT NULL,                     -- 课程ID，外键关联 courses(course_id)，标识报名的课程
+    student_id INT NOT NULL,                            -- 学生ID，外键关联 users(id)，标识报名的学生
+    enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    -- 报名时间，记录报名发生的时间，默认为当前时间戳
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE, -- 外键约束，当课程删除时，相关报名记录级联删除
+    FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE, -- 外键约束，当学生删除时，相关报名记录级联删除
+    UNIQUE (course_id, student_id)                      -- 唯一约束，确保同一学生不能重复报名同一课程
+);
+
+-- 聊天总结表：存储 AI 对学生问题的总结（包含 session_id 以支持按分节总结）
+CREATE TABLE chat_summaries (
+    id INT AUTO_INCREMENT PRIMARY KEY,                  -- 总结ID，自增主键，唯一标识每条总结记录
+    course_id VARCHAR(50) NOT NULL,                     -- 课程ID，外键关联 courses(course_id)，标识总结所属课程
+    summary TEXT NOT NULL,                              -- 总结内容，不能为空，存储 AI 生成的问题总结
+    session_id INT DEFAULT NULL,                        -- 分节ID，外键关联 course_sessions(id)，标识总结关联的课程分节，可为空（NULL 表示全课程总结）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,     -- 创建时间，记录总结生成的时间，默认为当前时间戳
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE, -- 外键约束，当课程删除时，相关总结级联删除
+    FOREIGN KEY (session_id) REFERENCES course_sessions(id) ON DELETE SET NULL -- 外键约束，当分节删除时，session_id 置为 NULL
+);
+
+-- 课程分节表：存储课程的分节信息
+CREATE TABLE course_sessions (
+    id INT AUTO_INCREMENT PRIMARY KEY,                  -- 分节ID，自增主键，唯一标识每个分节
+    course_id VARCHAR(50) NOT NULL,                     -- 课程ID，外键关联 courses(course_id)，标识分节所属课程
+    session_number INT NOT NULL,                        -- 分节编号，不能为空，表示分节的顺序或编号
+    title VARCHAR(255) NOT NULL,                        -- 分节标题，不能为空，描述分节的主题
+    key_points TEXT,                                    -- 重点内容，可为空，记录分节的重点知识点
+    difficulties TEXT,                                  -- 难点内容，可为空，记录分节的难点知识点
+    keywords VARCHAR(255),                              -- 关键词，可为空，用逗号分隔，记录分节的关键术语
+    created_by INT,                                     -- 创建者ID，外键关联 users(id)，标识创建分节的用户
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,     -- 创建时间，记录分节创建的时间，默认为当前时间戳
+    FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE, -- 外键约束，当课程删除时，相关分节级联删除
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL, -- 外键约束，当用户删除时，created_by 置为 NULL
+    UNIQUE (course_id, session_number)                  -- 唯一约束，确保同一课程下分节编号不重复
+);
+
+-- 索引：提高查询性能
+CREATE INDEX idx_content_course_tab ON content(course_id, tab);    -- 索引：加速按课程和内容类型查询内容
+CREATE INDEX idx_chat_course ON chat_messages(course_id);          -- 索引：加速按课程查询聊天消息
+CREATE INDEX idx_users_role ON users(role);                        -- 索引：加速按角色查询用户
+CREATE INDEX idx_sessions_course ON course_sessions(course_id);    -- 索引：加速按课程查询分节
+CREATE INDEX idx_chat_session ON chat_messages(session_id);        -- 索引：加速按分节查询聊天消息
+
+
