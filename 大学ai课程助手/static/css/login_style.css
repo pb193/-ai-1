@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+body {
+    background: linear-gradient(135deg, #007bff, #0056b3); /* 与课程管理系统的蓝色渐变一致 */
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page {
+    width: 360px;
+    padding: 8% 0 0;
+    margin: auto;
+}
+
+.form {
+    position: relative;
+    z-index: 1;
+    background: #ffffff; /* 白色背景，现代感 */
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* 与课程管理系统一致的圆角 */
+}
+
+.form h2 {
+    color: #007bff; /* 主题蓝色 */
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.form input {
+    font-family: "FontAwesome", "Roboto", sans-serif;
+    outline: 0;
+    background: #f8f9fa; /* 与课程管理系统一致的浅灰背景 */
+    width: 100%;
+    border: 1px solid #ddd;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 6px; /* 圆角输入框 */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container .fa-eye {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #007bff;
+    cursor: pointer;
+}
+
+.form button {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    outline: 0;
+    background: #007bff; /* 主题蓝色 */
+    width: 100%;
+    border: none;
+    border-radius: 25px;
+    margin: 10px 0;
+    padding: 15px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form button:hover,
+.form button:focus {
+    background: #0056b3;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.form button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+}
+
+.form .message {
+    margin: 15px 0 0;
+    color: #666;
+    font-size: 13px;
+}
+
+.form .message a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form .message a:hover {
+    text-decoration: underline;
+}

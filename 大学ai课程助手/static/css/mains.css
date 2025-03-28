@@ -1,0 +1,278 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif; /* 与其他页面一致 */
+}
+
+body {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef); /* 浅色渐变背景 */
+    color: #333;
+    line-height: 1.6;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left span {
+    font-size: 20px;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.nav-right span {
+    font-size: 16px;
+    color: #666;
+}
+
+.nav-right a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.nav-right a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+main {
+    padding: 30px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 28px;
+    color: #007bff;
+    font-weight: 600;
+}
+
+.add-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.tabs {
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #007bff;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.tab.active {
+    border-bottom: 2px solid #007bff;
+    color: #0056b3;
+    font-weight: 500;
+}
+
+.tab:hover {
+    color: #0056b3;
+}
+
+.cards {
+    display: none;
+}
+
+.cards.active {
+    display: block;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.card {
+    background: linear-gradient(135deg, #007bff, #0056b3); /* 蓝色渐变卡片 */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-content h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.card-content p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.card-id {
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: 400;
+}
+/* 模态框背景 */
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色遮罩 */
+    z-index: 1000; /* 确保在最上层 */
+    overflow: auto; /* 如果内容过长，支持滚动 */
+}
+
+/* 模态框内容 */
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto; /* 居中显示 */
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px; /* 最大宽度 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 关闭按钮 */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* 表单组 */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 提交按钮 */
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* 报名按钮 - 未报名状态 */
+.enroll-btn {
+    background-color: #28a745; /* 绿色，表示可报名 */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.enroll-btn:hover {
+    background-color: #218838; /* 深绿色，悬停效果 */
+}
+
+/* 报名按钮 - 已报名（禁用）状态 */
+.enroll-btn:disabled {
+    background-color: #6c757d; /* 灰色，表示已禁用 */
+    color: #fff;
+    cursor: not-allowed;
+}
+
+/* 查看详情按钮 */
+.view-btn {
+    background-color: #007bff; /* 蓝色，表示查看操作 */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-left: 5px; /* 与报名按钮保持间距 */
+}
+
+.view-btn:hover {
+    background-color: #0056b3; /* 深蓝色，悬停效果 */
+}
+

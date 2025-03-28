@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老师端 - 课程管理 - AI学习平台</title>
+    <link rel="stylesheet" href="../../static/css/maint.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <span>课程管理</span>
+            </div>
+            <div class="nav-right">
+                <span>
+                    <a href="/teacher-setting">账号设置</a> |
+                    <a href="student-settings.html">学生管理</a> |
+                    <a href="/">退出</a>
+                </span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="header-section">
+                <h1>我的课程</h1>
+                <button class="add-button" onclick="createCourse()">+ 创建课程</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('ongoing')">进行中的课程</button>
+                <button class="tab" onclick="switchTab('completed')">已完成的课程</button>
+            </div>
+
+            <div class="cards ongoing active" id="ongoing-courses">
+                <!-- 动态课程将在这里生成 -->
+            </div>
+
+            <div class="cards completed" id="completed-courses">
+                <!-- 动态已完成课程将在这里生成 -->
+            </div>
+        </div>
+    </main>
+    <script src="../../static/js/maint.js"></script>
+</body>
+</html>

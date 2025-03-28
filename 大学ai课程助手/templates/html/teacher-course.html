@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师端 - 课程详情管理</title>
+    <link rel="stylesheet" href="../../static/css/teacher-course-styles.css">
+    <!-- 添加基本的内联样式，确保 session-select 的显示 -->
+    <style>
+        .session-select {
+            margin-bottom: 10px;
+            width: 200px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <span>课程详情管理</span> > <span id="course-title">加载中...</span>
+            </div>
+            <div class="nav-right">
+                <span>
+                    <a href="/teacher-setting">账号设置</a> |
+                    <a href="/">退出</a>
+                </span>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="banner">
+                <div class="banner-content">
+                    <h1 id="banner-title">加载中...</h1>
+                    <p id="banner-details">加载中...</p>
+                    <p id="banner-enrollment">加载中...</p>
+                    <button class="edit-banner-btn" onclick="showEditBannerModal()">编辑课程信息</button>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('resources')">学习资源</button>
+                <button class="tab" onclick="switchTab('sessions')">课程分节</button>
+                <button class="tab" onclick="switchTab('ai-analysis')">AI分析</button>
+            </div>
+
+            <!-- 学习资源 -->
+            <div class="tab-content resources active">
+                <h2>学习资源</h2>
+                <div class="upload-section">
+                    <h3>上传学习资源</h3>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" id="resourceFile" accept=".docx,.pdf,.ppt,.pptx" multiple required>
+                        <button type="submit">上传文件</button>
+                    </form>
+                </div>
+                <div class="resource-list" id="resources-content">加载中...</div>
+                <button class="add-item-btn" onclick="showAddItemModal('resources')">+ 添加资源</button>
+            </div>
+
+            <!-- 课程分节管理 -->
+            <div class="tab-content sessions">
+                <h2>课程分节</h2>
+                <div id="sessions-content">加载中...</div>
+                <button class="add-item-btn" onclick="showAddSessionModal()">+ 添加分节</button>
+            </div>
+
+            <!-- AI 分析 -->
+            <div class="tab-content ai-analysis">
+                <h2>AI分析</h2>
+                <div class="analysis-section">
+                    <h3>学生知识点薄弱分析</h3>
+                    <select id="sessionSelectForAnalysis" class="session-select">
+                        <option value="">全课程分析</option>
+                        <!-- 动态加载分节选项 -->
+                    </select>
+                    <button class="analyze-btn" onclick="analyzeQuestions()">分析学生提问</button>
+                    <div class="analysis-result" id="analysisResult">点击“分析学生提问”以查看结果</div>
+                    <h3>历史分析记录</h3>
+                    <div class="history-list" id="historyList"></div>
+                </div>
+            </div>
+
+            <!-- 无数据提示 -->
+            <div class="no-data" style="display: none;">
+                <img src="/static/no-data-illustration.png" alt="暂无数据" class="illustration" onerror="this.style.display='none'">
+                <p>暂无数据</p>
+            </div>
+        </div>
+
+        <!-- Modal for Editing/Adding Course Content -->
+        <div id="contentModal" class="modal">
+            <div class="modal-content">
+                <h2 id="modalTitle">添加内容</h2>
+                <form id="contentForm">
+                    <label for="contentText">内容/资源:</label>
+                    <textarea id="contentText" required></textarea>
+                    <button type="submit">保存</button>
+                    <button type="button" onclick="closeModal()">取消</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal for Editing Banner (Course Info) -->
+        <div id="bannerModal" class="modal">
+            <div class="modal-content">
+                <h2>编辑课程信息</h2>
+                <form id="bannerForm">
+                  <label for="courseName">课程名称:</label>
+            <input type="text" id="courseName" required>
+            <label for="courseDetails">课程详情:</label>
+            <input type="text" id="courseDetails" required>
+            <label for="courseId">助课号:</label>
+            <input type="text" id="courseId" required>
+            <!-- 移除 enrollment 输入框 -->
+            <button type="submit">保存</button>
+            <button type="button" onclick="closeModal()">取消</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal for Adding/Editing Course Session -->
+        <div id="sessionModal" class="modal">
+            <div class="modal-content">
+                <h2 id="sessionModalTitle">添加课程分节</h2>
+                <form id="sessionForm">
+                    <label for="sessionNumber">分节编号:</label>
+                    <input type="number" id="sessionNumber" required min="1">
+                    <label for="sessionTitle">分节标题:</label>
+                    <input type="text" id="sessionTitle" required>
+                    <label for="keyPoints">重点内容:</label>
+                    <textarea id="keyPoints" required></textarea>
+                    <label for="difficulties">难点内容:</label>
+                    <textarea id="difficulties" required></textarea>
+                    <label for="keywords">关键词 (逗号分隔):</label>
+                    <input type="text" id="keywords" required>
+                    <button type="submit">保存</button>
+                    <button type="button" onclick="closeModal()">取消</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- 脚本加载，确保 JSZip 在 pptxgenjs 之前 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx-parser@latest/dist/docx-parser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.10.0/dist/pptxgen.min.js"></script>
+    <script src="../../static/js/teacher-course.js"></script>
+</body>
+</html>

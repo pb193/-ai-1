@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生端 - 课程详情</title>
+    <link rel="stylesheet" href="../../static/css/student-course-styles.css">
+    <style>
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+        }
+        .toast.info { background: #3498db; }
+        .toast.error { background: #e74c3c; }
+        .session-select { margin-bottom: 10px; width: 100%; padding: 5px; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <span>课程详情</span> > <span id="course-title">加载中...</span>
+            </div>
+            <div class="nav-right">
+                <span>AI课程 | 个人设置 | 退出</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="banner">
+                <div class="banner-content">
+                    <h1 id="banner-title">加载中...</h1>
+                    <p id="banner-deadline">加载中...</p>
+                    <p id="banner-enrollment">加载中...</p>
+                </div>
+            </div>
+
+            <div class="content-split">
+                <!-- Left Side: Course Tabs -->
+                <div class="course-content">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab('overview')">课程内容</button>
+                        <button class="tab" onclick="switchTab('resources')">学习资源</button>
+                        <button class="tab" onclick="switchTab('discussion')">班级讨论</button>
+                        <button class="tab" onclick="switchTab('tasks')">课程任务</button>
+                    </div>
+
+                    <div class="tab-content overview active">
+                        <h2>课程内容</h2>
+                        <div class="content-item" id="overview-content">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+
+                    <div class="tab-content resources">
+                        <h2>学习资源</h2>
+                        <div class="content-item" id="resources-content">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+
+                    <div class="tab-content discussion">
+                        <h2>班级讨论</h2>
+                        <div class="content-item" id="discussion-content">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+
+                    <div class="tab-content tasks">
+                        <h2>课程任务</h2>
+                        <div class="content-item" id="tasks-content">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: AI Chatbot -->
+                <div class="chat-panel">
+                    <h2>AI学习助手</h2>
+                    <select id="sessionSelect" class="session-select">
+                        <option value="">选择课程分节</option>
+                        <!-- 动态加载分节选项 -->
+                    </select>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input">
+                        <input type="text" id="chatInput" placeholder="输入问题（基于所选分节）..." />
+                        <button id="sendButton">发送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../static/js/student-course-detail.js"></script>
+</body>
+</html>

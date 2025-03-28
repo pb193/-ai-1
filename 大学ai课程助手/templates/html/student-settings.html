@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生端 - 个人设置</title>
+    <link rel="stylesheet" href="../../static/css/teacher-settings.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-left">
+                <span>学生个人设置</span>
+            </div>
+            <div class="nav-right">
+                <span>
+                    <a href="/mains">返回课程</a> |
+                    <a href="/">退出</a>
+                </span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>学生个人设置</h1>
+            <form id="studentSettingsForm" class="settings-form">
+                <label for="studentName">姓名:</label>
+                <input type="text" id="studentName" value="" required>
+
+                <label for="studentEmail">邮箱:</label>
+                <input type="email" id="studentEmail" value="" required>
+
+                <label for="studentPassword">密码:</label>
+                <input type="password" id="studentPassword" placeholder="输入新密码" required>
+
+                <button type="submit">保存设置</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="../../static/js/setting.js"></script>
+</body>
+</html>

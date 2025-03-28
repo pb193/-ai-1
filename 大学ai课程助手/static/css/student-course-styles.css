@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e9ecef;
+}
+
+.nav-left span {
+    font-size: 20px;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.nav-right span {
+    font-size: 16px;
+    color: #666;
+    cursor: pointer;
+}
+
+.nav-right span:hover {
+    color: #0056b3;
+}
+
+main {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.banner {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    padding: 50px 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.banner-content h1 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.banner-content p {
+    font-size: 18px;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.content-split {
+    display: flex;
+    gap: 20px;
+}
+
+.course-content, .chat-panel {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.course-content:hover, .chat-panel:hover {
+    transform: translateY(-2px);
+}
+
+.tabs {
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #007bff;
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.tab.active {
+    border-bottom: 2px solid #007bff;
+    color: #0056b3;
+    font-weight: 500;
+}
+
+.tab:hover {
+    color: #0056b3;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff;
+    font-weight: 600;
+}
+
+.content-item {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.content-item p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.8;
+}
+
+.resource-link, .task-link {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.resource-link:hover, .task-link:hover {
+    background-color: #0056b3;
+}
+
+.chat-panel {
+    height: 650px;
+    display: flex; /* 使用 Flexbox 布局 */
+    flex-direction: column; /* 纵向排列 */
+}
+
+.chat-panel h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #007bff;
+    font-weight: 600;
+    flex-shrink: 0; /* 防止标题被压缩 */
+}
+
+.session-select {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 5px;
+    flex-shrink: 0; /* 防止选择框被压缩 */
+}
+
+.chat-messages {
+    flex: 1; /* 占用剩余空间 */
+    min-height: 0; /* 防止溢出 */
+    overflow-y: auto;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.user-message, .ai-message {
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: #ffffff;
+    text-align: right;
+    margin-left: auto;
+}
+
+.ai-message {
+    background-color: #e9ecef;
+    color: #333;
+    text-align: left;
+    margin-right: auto;
+}
+
+.chat-input {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-shrink: 0; /* 固定输入框高度 */
+    padding-top: 10px; /* 添加顶部间距以美观 */
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #f8f9fa;
+}
+
+.chat-input input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.chat-input button {
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.chat-input button:hover {
+    background-color: #0056b3;
+}
+
+.chat-input button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
