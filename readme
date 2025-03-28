@@ -1,0 +1,192 @@
+课程管理系统 / Course Management System
+概述 / Overview
+中文
+这是一个基于 Flask 的课程管理 Web 应用程序，旨在为学生和教师提供一个集成的平台，用于课程管理、资源共享和学习互动。系统支持用户注册与登录、课程创建与管理、文件上传与下载、学生报名、AI 聊天功能（基于阿里云 DashScope API）以及自动清理旧消息的定时任务。使用 MySQL 数据库存储数据，并通过 JWT 实现安全的用户认证。
+
+当前版本: 1.0
+
+最后更新: 2025年3月28日
+
+English
+This is a Flask-based web application for course management, designed to provide an integrated platform for students and teachers to manage courses, share resources, and interact. The system supports user registration and login, course creation and management, file upload and download, student enrollment, an AI chat feature (powered by Aliyun DashScope API), and scheduled tasks for cleaning old messages. It uses a MySQL database for data storage and JWT for secure user authentication.
+
+Current Version: 1.0
+
+Last Updated: March 28, 2025
+
+功能 / Features
+中文
+用户管理:
+注册与登录（支持学生、教师、管理员角色，使用 JWT 认证）。
+用户设置更新（姓名、邮箱、密码）。
+课程管理:
+教师创建、编辑、删除课程及分节。
+学生浏览课程并报名。
+查看课程详情、学生名单及报名状态。
+资源管理:
+教师上传课程资源（支持多种文件格式，如 PDF、DOCX、图片等）。
+学生下载已报读课程的资源。
+AI 聊天:
+学生可提问课程相关问题，AI（阿里云 DashScope）提供解答。
+教师可查看学生问题总结。
+定时任务:
+每天自动清理超过 30 天的聊天记录。
+安全性:
+使用 bcrypt 加密密码。
+JWT 权限控制，确保角色访问限制。
+文件上传类型限制，防止恶意文件。
+English
+User Management:
+Registration and login (supports student, teacher, and admin roles with JWT authentication).
+Update user settings (name, email, password).
+Course Management:
+Teachers can create, edit, and delete courses and sessions.
+Students can browse and enroll in courses.
+View course details, student lists, and enrollment status.
+Resource Management:
+Teachers can upload course resources (supports formats like PDF, DOCX, images, etc.).
+Students can download resources from enrolled courses.
+AI Chat:
+Students can ask course-related questions, answered by AI (Aliyun DashScope).
+Teachers can view summaries of student questions.
+Scheduled Tasks:
+Automatically cleans chat messages older than 30 days daily.
+Security:
+Passwords encrypted with bcrypt.
+JWT-based role-based access control.
+Restricted file upload types to prevent malicious uploads.
+要求 / Requirements
+中文
+操作系统: Windows、Linux 或 macOS。
+Python 版本: Python 3.8 或更高。
+数据库: MySQL 5.7 或更高。
+依赖项:
+flask（Web 框架）
+flask-bcrypt（密码加密）
+mysql-connector-python（MySQL 连接）
+pyjwt（JWT 认证）
+openai（AI 聊天 API）
+apscheduler（定时任务）
+werkzeug（文件上传安全）
+外部服务: 阿里云 DashScope API 密钥。
+English
+Operating System: Windows, Linux, or macOS.
+Python Version: Python 3.8 or higher.
+Database: MySQL 5.7 or higher.
+Dependencies:
+flask (Web framework)
+flask-bcrypt (Password encryption)
+mysql-connector-python (MySQL connector)
+pyjwt (JWT authentication)
+openai (AI chat API)
+apscheduler (Scheduled tasks)
+werkzeug (Secure file uploads)
+External Service: Aliyun DashScope API key.
+安装 / Installation
+中文
+安装 Python: 确保已安装 Python 3.8+（下载地址)。
+克隆项目:
+bash
+
+
+git clone https://github.com/你的用户名/你的仓库名.git
+cd 你的仓库名
+安装依赖:
+bash
+
+
+pip install -r requirements.txt
+（若无 requirements.txt，手动安装：pip install flask flask-bcrypt mysql-connector-python pyjwt openai apscheduler werkzeug）
+配置 MySQL:
+创建数据库：
+sql
+
+Collapse
+
+Wrap
+
+Copy
+CREATE DATABASE course_management;
+更新代码中的 DB_CONFIG，替换 user 和 password 为你的 MySQL 凭据。
+创建表（参考下文“数据库结构”）。
+配置 API 密钥:
+在代码中替换 client = OpenAI(api_key="") 的 api_key 为你的阿里云 DashScope API 密钥。
+运行程序:
+bash
+
+
+
+python app.py
+默认在 http://0.0.0.0:5000 上运行。
+English
+Install Python: Ensure Python 3.8+ is installed (download here).
+Clone the Project:
+bash
+
+
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+Install Dependencies:
+bash
+
+pip install -r requirements.txt
+(If no requirements.txt, install manually: pip install flask flask-bcrypt mysql-connector-python pyjwt openai apscheduler werkzeug)
+Configure MySQL:
+Create the database:
+sql
+
+
+CREATE DATABASE course_management;
+Update DB_CONFIG in the code with your MySQL user and password.
+Create tables (see “Database Schema” below).
+Configure API Key:
+Replace api_key="" in client = OpenAI(api_key="") with your Aliyun DashScope API key.
+Run the Application:
+bash
+
+
+
+python app.py
+Runs by default at http://0.0.0.0:5000.
+使用指南 / Usage Guide
+中文
+启动应用: 运行 python app.py，访问 http://localhost:5000。
+注册与登录:
+访问 /signup 注册用户。
+访问 /api/login 登录，获取 JWT token。
+课程管理:
+教师：通过 /api/teacher/courses 创建课程，上传资源。
+学生：通过 /api/student/courses 浏览并报名课程。
+AI 聊天:
+学生在 /api/chat/<course_id> 发送问题，获取 AI 回复。
+教师在 /api/chat/<course_id>/summarize 查看问题总结。
+资源管理:
+教师上传文件至 /api/upload/<course_id>。
+学生下载文件从 /api/resources/download/<content_id>。
+English
+Start the App: Run python app.py and visit http://localhost:5000.
+Register and Login:
+Visit /signup to register a user.
+Use /api/login to log in and obtain a JWT token.
+Course Management:
+Teachers: Create courses via /api/teacher/courses and upload resources.
+Students: Browse and enroll in courses via /api/student/courses.
+AI Chat:
+Students: Send questions to /api/chat/<course_id> for AI responses.
+Teachers: View question summaries at /api/chat/<course_id>/summarize.
+Resource Management:
+Teachers: Upload files to /api/upload/<course_id>.
+Students: Download files from /api/resources/download/<content_id>.
+
+
+注意事项 / Notes
+中文
+API 密钥: 未配置 DashScope API 密钥将导致 AI 聊天功能不可用。
+数据库: 确保 MySQL 服务运行并正确配置。
+安全性: 生产环境中，SECRET_KEY 应固定并安全存储，建议使用 HTTPS。
+调试模式: 默认开启 debug=True，生产环境应关闭。
+English
+API Key: Without a DashScope API key, the AI chat feature will not work.
+Database: Ensure MySQL is running and configured correctly.
+Security: In production, fix and securely store SECRET_KEY, and use HTTPS.
+Debug Mode: Runs with debug=True by default; disable in production.
